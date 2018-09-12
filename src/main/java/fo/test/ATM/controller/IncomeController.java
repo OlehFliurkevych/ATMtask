@@ -2,6 +2,8 @@ package fo.test.ATM.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +28,7 @@ public class IncomeController {
 	@RequestMapping(value="/",method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public IncomeDTO createIncome(@RequestBody IncomeDTO incomeDto) {
+	public IncomeDTO createIncome(@Valid @RequestBody IncomeDTO incomeDto) {
 		incomeService.saveIncome(incomeDto);
 		return incomeDto;
 	}

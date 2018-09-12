@@ -2,6 +2,8 @@ package fo.test.ATM.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +27,7 @@ public class WithdrawalController {
 	@RequestMapping(value="/",method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public WithdrawalDTO createWithdrawal(@RequestBody WithdrawalDTO withdrawalDto) {
+	public WithdrawalDTO createWithdrawal(@Valid @RequestBody WithdrawalDTO withdrawalDto) {
 		withdrawalService.saveWithdrawal(withdrawalDto);
 		return withdrawalDto;
 	}
@@ -41,6 +43,8 @@ public class WithdrawalController {
 	public WithdrawalDTO getWithdrawalById(@PathVariable("id")Long withdrawalId) {
 		return withdrawalService.findWithdrawalById(withdrawalId);
 	}
+	
+	
 	
 	
 	
