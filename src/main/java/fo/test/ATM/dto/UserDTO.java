@@ -18,6 +18,4 @@ public class UserDTO {
 	private String firstName;
 	private String fullName;
 	private BigDecimal balance;
-//	private List<IncomeDTO> listIncomeDTO;
-//	private List<WithdrawalDTO> listWithdrawalDTO;
 }

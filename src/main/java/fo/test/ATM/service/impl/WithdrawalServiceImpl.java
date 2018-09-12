@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import fo.test.ATM.dto.WithdrawalDTO;
 import fo.test.ATM.entity.IncomeEntity;
+import fo.test.ATM.entity.UserEntity;
 import fo.test.ATM.entity.WithdrawalEntity;
+import fo.test.ATM.repository.UserRepository;
 import fo.test.ATM.repository.WithdrawalRepository;
 import fo.test.ATM.service.WithdrawalService;
 import fo.test.ATM.service.utils.ObjectMapperUtils;
@@ -15,16 +17,26 @@ import fo.test.ATM.service.utils.ObjectMapperUtils;
 @Service
 public class WithdrawalServiceImpl implements WithdrawalService{
 
-	@Autowired
 	private WithdrawalRepository withdrawalRepository;
-	
-	@Autowired
+	private UserRepository userRepository;
 	private ObjectMapperUtils modelMapper;
-	
+
+	@Autowired
+	public WithdrawalServiceImpl(WithdrawalRepository withdrawalRepository, UserRepository userRepository,
+			ObjectMapperUtils modelMapper) {
+		this.withdrawalRepository = withdrawalRepository;
+		this.userRepository = userRepository;
+		this.modelMapper = modelMapper;
+	}
+
 	@Override
 	public void saveWithdrawal(WithdrawalDTO withdrawalDto) {
-		WithdrawalEntity entity=modelMapper.map(withdrawalDto, WithdrawalEntity.class);
-		withdrawalRepository.save(entity);
+		WithdrawalEntity entityWithdrawal=modelMapper.map(withdrawalDto, WithdrawalEntity.class);
+		UserEntity entityUser=userRepository.getOne(entityWithdrawal.getUser().getId_passport());
+		entityWithdrawal.setBalance(entityUser.getBalance());
+		entityUser.setBalance(entityUser.getBalance().subtract(entityWithdrawal.getSum()));
+		userRepository.saveAndFlush(entityUser);
+		withdrawalRepository.save(entityWithdrawal);
 	}
 
 	@Override

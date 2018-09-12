@@ -19,10 +19,9 @@ import lombok.NoArgsConstructor;
 public class WithdrawalDTO {
 
 	private Long id;
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date;
 	private BigDecimal sum;
-//	private BigDecimal balance;
 	private UserDTO user;
 }
