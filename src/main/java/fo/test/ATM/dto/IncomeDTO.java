@@ -23,6 +23,6 @@ public class IncomeDTO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date;
 	private BigDecimal sum;
-	private BigDecimal balance;
+//	private BigDecimal balance;
 	private UserDTO user;
 }

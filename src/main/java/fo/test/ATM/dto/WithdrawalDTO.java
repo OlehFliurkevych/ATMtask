@@ -23,6 +23,6 @@ public class WithdrawalDTO {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date date;
 	private BigDecimal sum;
-	private BigDecimal balance;
+//	private BigDecimal balance;
 	private UserDTO user;
 }

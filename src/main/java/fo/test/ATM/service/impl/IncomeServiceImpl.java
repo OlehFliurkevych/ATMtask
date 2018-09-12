@@ -1,5 +1,6 @@
 package fo.test.ATM.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,23 +8,36 @@ import org.springframework.stereotype.Service;
 
 import fo.test.ATM.dto.IncomeDTO;
 import fo.test.ATM.entity.IncomeEntity;
+import fo.test.ATM.entity.UserEntity;
 import fo.test.ATM.repository.IncomeRepository;
+import fo.test.ATM.repository.UserRepository;
 import fo.test.ATM.service.IncomeService;
 import fo.test.ATM.service.utils.ObjectMapperUtils;
 
 @Service
 public class IncomeServiceImpl implements IncomeService{
 
-	@Autowired
 	private IncomeRepository incomeRepository;
-
-	@Autowired
+	private UserRepository userRepository;
 	private ObjectMapperUtils modelMapper;
 	
+	
+	@Autowired
+	public IncomeServiceImpl(IncomeRepository incomeRepository, UserRepository userRepository,
+			ObjectMapperUtils modelMapper) {
+		this.incomeRepository = incomeRepository;
+		this.userRepository = userRepository;
+		this.modelMapper = modelMapper;
+	}
+
 	@Override
 	public void saveIncome(IncomeDTO incomeDto) {
-		IncomeEntity entity=modelMapper.map(incomeDto,IncomeEntity.class);
-		incomeRepository.save(entity);
+		IncomeEntity entityIncome=modelMapper.map(incomeDto,IncomeEntity.class);
+		UserEntity entityUser=userRepository.getOne(entityIncome.getUser().getId_passport());
+		entityIncome.setBalance(entityUser.getBalance());
+		entityUser.setBalance(entityUser.getBalance().add(entityIncome.getSum()));
+		userRepository.saveAndFlush(entityUser);
+		incomeRepository.save(entityIncome);
 	}
 
 	@Override
